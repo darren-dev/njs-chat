@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    @RenderSection("meta", false)
+    <title>NJS-Chat | @ViewBag.Title</title>
+
+    <link href="~/Content/Layout/three-column.css" rel="stylesheet" />
+    @RenderSection("styles", false)
+</head>
+    <body>
+        <div id="pagewrap">
+
+            <div id="header">
+                <h1>NJS-Chat</h1>
+            </div>
+            
+            @RenderBody()
+
+            <footer id="footer">
+                <h4>Footer</h4>
+                <p>Footer text</p>
+            </footer>
+
+        </div>
+        @RenderSection("scripts", false)
+    </body>
+</html>
