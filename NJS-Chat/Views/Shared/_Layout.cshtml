@@ -9,21 +9,11 @@
     <link href="~/Content/Layout/three-column.css" rel="stylesheet" />
     @RenderSection("styles", false)
 </head>
-    <body>
-        <div id="pagewrap">
+<body style="position: absolute;bottom: 0;top: 0;left: 0;right: 0;overflow: hidden;margin: 0;padding: 0;">
 
-            <div id="header">
-                <h1>NJS-Chat</h1>
-            </div>
-            
-            @RenderBody()
+    @RenderBody()
 
-            <footer id="footer">
-                <h4>Footer</h4>
-                <p>Footer text</p>
-            </footer>
+    @RenderSection("scripts", false)
 
-        </div>
-        @RenderSection("scripts", false)
-    </body>
+</body>
 </html>

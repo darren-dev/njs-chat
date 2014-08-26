@@ -3,14 +3,35 @@
 }
 
 @section styles{
+    <link href="~/Content/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    @*<link href="~/Content/bootstrap/bootstrap-theme.min.css" rel="stylesheet" />*@
+
     <style type="text/css">
-        #content
-            {
-                position:absolute; left: 0; right: 0; bottom: 0; top: 0px; 
-            }
+        #messageFrame {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            top: 70px;
+        }
     </style>
 }
 
-<iframe id="content" width="100%" height="100%" frameborder="0" src="@Url.Action("Message", "Home")"></iframe>
+<div id="pagewrap" style="padding: 10px">
+    <form class="form-inline">
+        <div class="form-group">
+            <input class="form-control" placeholder="Type a message here" autofocus="" style="width: 500px" />
+        </div>
+        <div class="form-group">
+            <select class="form-control">
+                <option>Person</option>
+            </select>
+        </div>
+        
+        <button class="btn btn-info">Send</button>
+    </form>
+</div>
+
+<iframe id="messageFrame" width="100%" height="100%" frameborder="0" src="@Url.Action("Message", "Home")"></iframe>
 
 
