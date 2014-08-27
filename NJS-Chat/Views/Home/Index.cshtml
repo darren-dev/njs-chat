@@ -17,20 +17,23 @@
     </style>
 }
 
+
 <div id="pagewrap" style="padding: 10px">
-    <form class="form-inline">
+    @using (Html.BeginForm("PostMessage", "Home", FormMethod.Post, new { @class = "form-inline" }))
+    {
         <div class="form-group">
-            <input class="form-control" placeholder="Type a message here" autofocus="" style="width: 500px" />
+            <input id="message" name="message" class="form-control" placeholder="Type a message here" autofocus="" style="width: 500px" autocomplete="off" />
         </div>
         <div class="form-group">
             <select class="form-control">
                 <option>Person</option>
             </select>
         </div>
-        
+
         <button class="btn btn-info">Send</button>
-    </form>
+    }
 </div>
+
 
 <iframe id="messageFrame" width="100%" height="100%" frameborder="0" src="@Url.Action("Message", "Home")"></iframe>
 

@@ -1,11 +1,13 @@
-﻿@{
+﻿@model List<NJS_Chat.Helpers.MessageHelper.Message>
+
+@{
     ViewBag.Title = "Message";
     Layout = null;
 }
 
 <html>
 <head>
-    @*<meta http-equiv="refresh" content="19">*@
+    @*<meta http-equiv="refresh" content="9">*@
     <title></title>
     <link href="~/Content/Plugins/Timer.css" rel="stylesheet" />
     <link href="~/Content/Plugins/Loader.css" rel="stylesheet" />
@@ -15,15 +17,23 @@
     <form>
         <div id="pagewrap">
             <div id="middle">
-                <div class="timeHolder">
+                <div class="secondsOnly">
                     <div class="time-part-wrapper">
-                        <div class="time-part seconds tens">
+                        @*<div class="time-part seconds tens">
                             <div class="digit-wrapper">
                                 <span class="digit">0</span>
-                                <span class="digit">1</span>
-                                <span class="digit">0</span>
-                            </div>
-                        </div>
+                                    <span class="digit">9</span>
+                                    <span class="digit">8</span>
+                                    <span class="digit">7</span>
+                                    <span class="digit">6</span>
+                                    <span class="digit">5</span>
+                                    <span class="digit">4</span>
+                                    <span class="digit">3</span>
+                                    <span class="digit">2</span>
+                                    <span class="digit">1</span>
+                                    <span class="digit">0</span>
+                                                    </div>
+                                                </div>*@
                         <div class="time-part seconds ones">
                             <div class="digit-wrapper">
                                 <span class="digit">0</span>
@@ -41,22 +51,11 @@
                         </div>
                     </div>
                 </div>
-                
-                <p>Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.</p>
-                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-                <p>Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.</p>
-                <p>Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.</p>
-                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-                <p>Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.</p>
-                <p>Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.</p>
-                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-                <p>Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.</p>
-                <p>Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.</p>
-                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-                <p>Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.</p>
-                <p>Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.</p>
-                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-                <p>Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.</p>
+
+                @foreach (var message in Model)
+                {
+                    <p>@message.MessageBody</p>
+                }
             </div>
 
             <div id="sidebar">

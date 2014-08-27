@@ -1,11 +1,20 @@
 ﻿.timeHolder {
     margin: -5px 0 0 -15px;
     padding: 3px 3px 3px 5px;
-    border-bottom-right-radius: 33px;
+    border-bottom-right-radius: 20px;
     background: #C9CACC;
-    width: 56px;
+    width: 333px;
     height: 43px;
 }
+
+    .secondsOnly {
+        margin: -5px 0 0 -15px;
+        padding: 0px 3px 4px 5px;
+        border-bottom-right-radius: 10px;
+        background: #C9CACC;
+        width: 30px;
+        height: 36px;
+    }
 
 .digit {
     display: inline-block;
@@ -24,10 +33,11 @@
 .time-part {
     width: 21px;
     text-align: center;
-    height: 35px;
+    height: 40px;
     overflow: hidden;
     display: inline-block;
     box-sizing: border-box;
+    margin-left: 3px;
 }
 
     .time-part .digit-wrapper {
