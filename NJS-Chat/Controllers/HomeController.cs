@@ -4,14 +4,20 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using NJS_Chat.Helpers;
+using NJS_Chat.Models;
 
 namespace NJS_Chat.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index(string username)
         {
-            return View();
+            IndexViewModel ivm = new IndexViewModel
+            {
+                Username = username
+            };
+
+            return View(ivm);
         }
 
         public ActionResult Message()
@@ -20,12 +26,12 @@ namespace NJS_Chat.Controllers
         }
 
         [HttpPost]
-        public ActionResult PostMessage(string message)
+        public ActionResult PostMessage(string username, string message)
         {
             MessageHelper.Message bMessage = new MessageHelper.Message
             {
                 DateSent = DateTime.Now,
-                From = "Darren",
+                From = username,
                 To = "Everyone",
                 MessageBody = message,
                 MessageColor = MessageHelper.MessageColor.Green
@@ -36,7 +42,7 @@ namespace NJS_Chat.Controllers
             mh.QueMessage(bMessage);
 
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Home", new { username = username });
         }
     }
 }
