@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using NJS_Chat.Helpers;
 using NJS_Chat.Models;
@@ -10,31 +7,48 @@ namespace NJS_Chat.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index(string username)
+        public ActionResult Index(string sessionId)
         {
-            IndexViewModel ivm = new IndexViewModel
-            {
-                Username = username
-            };
+            Global.User currentUser;
+            UserHelper uh = new UserHelper();
 
-            return View(ivm);
+            if (uh.AuthorizeUser(sessionId, out currentUser) == UserHelper.UserDetail.Valid)
+            {
+                IndexViewModel ivm = new IndexViewModel
+                {
+                    Username = currentUser.Username
+                };
+
+                return View(ivm);
+            }
+
+            return RedirectToAction("Login", "Auth");
         }
 
         public ActionResult Message()
         {
-            return View(MessageHelper.MessageQue);
+            MessageHelper mh = new MessageHelper();
+
+            return View(mh.GetMessages());
         }
 
         [HttpPost]
-        public ActionResult PostMessage(string username, string message)
+        public ActionResult PostMessage(string sessionId, string message)
         {
-            MessageHelper.Message bMessage = new MessageHelper.Message
+            Global.User currentUser;
+            UserHelper uh = new UserHelper();
+            if (uh.AuthorizeUser(sessionId, out currentUser) != UserHelper.UserDetail.Valid)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            Global.Message bMessage = new Global.Message
             {
                 DateSent = DateTime.Now,
-                From = username,
+                From = currentUser.Username,
                 To = "Everyone",
                 MessageBody = message,
-                MessageColor = MessageHelper.MessageColor.Green
+                MessageColor = Global.MessageColor.Green
             };
 
 
@@ -42,7 +56,7 @@ namespace NJS_Chat.Controllers
             mh.QueMessage(bMessage);
 
 
-            return RedirectToAction("Index", "Home", new { username = username });
+            return RedirectToAction("Index", "Home", new { sessionId = sessionId });
         }
     }
 }

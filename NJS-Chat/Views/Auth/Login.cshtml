@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Login</h2>
+
+@using (Html.BeginForm())
+{
+    <input name="username" id="username" type="text" autocomplete="off"/>
+    <br/>
+    <input name="password" id="password" type="password" autocomplete="off" />
+    <br/>
+    <input type="submit" value="login"/>
+}

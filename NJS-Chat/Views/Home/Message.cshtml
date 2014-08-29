@@ -1,4 +1,4 @@
-﻿@model List<NJS_Chat.Helpers.MessageHelper.Message>
+﻿@model List<NJS_Chat.Helpers.Global.Message>
 
 @{
     ViewBag.Title = "Message";
@@ -16,27 +16,12 @@
 <body style="overflow: auto;">
     <form>
         <div id="pagewrap">
-            <div id="middle">
-                <div class="secondsOnly">
-                    <div class="time-part-wrapper">
-                        @*<div class="time-part seconds tens">
-                                <div class="digit-wrapper">
-                                    <span class="digit">0</span>
-                                        <span class="digit">9</span>
-                                        <span class="digit">8</span>
-                                        <span class="digit">7</span>
-                                        <span class="digit">6</span>
-                                        <span class="digit">5</span>
-                                        <span class="digit">4</span>
-                                        <span class="digit">3</span>
-                                        <span class="digit">2</span>
-                                        <span class="digit">1</span>
-                                        <span class="digit">0</span>
-                                                        </div>
-                                                    </div>
-                            <div class="time-part seconds ones">
-                                <div class="digit-wrapper">
-                                    <span class="digit">0</span>
+            <div id="middle" style="width: 90%">
+                @*<div class="secondsOnly">
+                                    <div class="time-part-wrapper">
+                    <div class="time-part seconds tens">
+                            <div class="digit-wrapper">
+                                <span class="digit">0</span>
                                     <span class="digit">9</span>
                                     <span class="digit">8</span>
                                     <span class="digit">7</span>
@@ -47,16 +32,31 @@
                                     <span class="digit">2</span>
                                     <span class="digit">1</span>
                                     <span class="digit">0</span>
-                                </div>
-                            </div>*@
-                    </div>
-                </div>
-                
+                                                    </div>
+                                                </div>
+                        <div class="time-part seconds ones">
+                            <div class="digit-wrapper">
+                                <span class="digit">0</span>
+                                <span class="digit">9</span>
+                                <span class="digit">8</span>
+                                <span class="digit">7</span>
+                                <span class="digit">6</span>
+                                <span class="digit">5</span>
+                                <span class="digit">4</span>
+                                <span class="digit">3</span>
+                                <span class="digit">2</span>
+                                <span class="digit">1</span>
+                                <span class="digit">0</span>
+                            </div>
+                        </div>
+                                    </div>
+                                </div>*@
+
                 @if (Model.Count > 0)
                 {
                     foreach (var message in Model)
                     {
-                        <p><strong>@message.From :</strong>@message.MessageBody</p>
+                        <p><strong>@message.From :</strong>@Html.Raw(message.MessageBody.Replace(Environment.NewLine, "<div></div>"))</p>
                     }
                 }
                 else
@@ -65,10 +65,10 @@
                 }
             </div>
 
-            <div id="sidebar">
+            @*<div id="sidebar">
                 <h2>Latest Links</h2>
                 <a href="http://www.google.co.za" target="_blank"></a>
-            </div>
+            </div>*@
 
             <div id="footer">
             </div>

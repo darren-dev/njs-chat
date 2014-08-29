@@ -90,10 +90,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Global.cs" />
     <Compile Include="Helpers\MessageHelper.cs" />
     <Compile Include="Helpers\UserHelper.cs" />
     <Compile Include="Models\IndexViewModel.cs" />
@@ -106,7 +108,9 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Message.cshtml" />
+    <Content Include="Database\Users.json" />
     <None Include="Properties\PublishProfiles\Localhost.pubxml" />
+    <Content Include="Views\Auth\Login.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
