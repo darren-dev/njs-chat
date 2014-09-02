@@ -1,27 +1,26 @@
 ﻿using System;
 using System.Web.Mvc;
 using NJS_Chat.Helpers;
+using NJS_Chat.Models;
 
 namespace NJS_Chat.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index(string sessionId)
+        public ActionResult Index(string username, string sessionId)
         {
-            Global.User currentUser;
             UserHelper uh = new UserHelper();
+            if (uh.GetSessionState(username, sessionId) != UserHelper.UserDetail.Valid)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
 
-            //if (uh.AuthorizeUser(sessionId, out currentUser) == UserHelper.UserDetail.Valid)
-            //{
-            //    IndexViewModel ivm = new IndexViewModel
-            //    {
-            //        Username = currentUser.Username
-            //    };
+            IndexViewModel ivm = new IndexViewModel
+            {
+                Username = username
+            };
 
-            //    return View(ivm);
-            //}
-
-            return RedirectToAction("Login", "Auth");
+            return View(ivm);
         }
 
         public ActionResult Message()
@@ -32,14 +31,13 @@ namespace NJS_Chat.Controllers
         }
 
         [HttpPost]
-        public ActionResult PostMessage(string sessionId, string message)
+        public ActionResult PostMessage(string username, string sessionId, string message)
         {
-            //Global.User currentUser;
-            //UserHelper uh = new UserHelper();
-            //if (uh.AuthorizeUser(sessionId, out currentUser) != UserHelper.UserDetail.Valid)
-            //{
-            //    return RedirectToAction("Login", "Auth");
-            //}
+            UserHelper uh = new UserHelper();
+            if (uh.GetSessionState(username, sessionId) != UserHelper.UserDetail.Valid)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
 
             Global.Message bMessage = new Global.Message
             {
@@ -55,7 +53,7 @@ namespace NJS_Chat.Controllers
             mh.QueMessage(bMessage);
 
 
-            return RedirectToAction("Index", "Home", new { sessionId = sessionId });
+            return RedirectToAction("Index", "Home", new { username = username, sessionId = sessionId });
         }
     }
 }

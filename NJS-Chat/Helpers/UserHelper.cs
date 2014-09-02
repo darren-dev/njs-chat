@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI.WebControls;
 
 namespace NJS_Chat.Helpers
 {
     public class UserHelper
     {
-
         public enum UserDetail
         {
             Valid,
+            Inavlid,
             SessionExpired
         }
 
@@ -37,7 +33,30 @@ namespace NJS_Chat.Helpers
             dh.UpdateUser(username, user);
         }
 
-        private string GetUserSession(string username, string password)
+        public UserDetail GetSessionState(string username, string sessionId)
+        {
+            if (String.IsNullOrEmpty(username) || String.IsNullOrEmpty(sessionId))
+            {
+                return UserDetail.Inavlid;
+            }
+
+            DatabaseHelper dh = new DatabaseHelper();
+            var user = dh.GetUserFile(username);
+
+            if (sessionId != user.SessionId)
+            {
+                return UserDetail.Inavlid;
+            }
+
+            if (user.SessionTime <= DateTime.Now.AddMinutes(-10))
+            {
+                return UserDetail.SessionExpired;
+            }
+
+            return UserDetail.Valid;
+        }
+
+        private static string GetUserSession(string username, string password)
         {
             DatabaseHelper dh = new DatabaseHelper();
             Global.User user = dh.GetUserFile(username);
@@ -49,13 +68,25 @@ namespace NJS_Chat.Helpers
 
             if (user.Username == username && user.Password == password)
             {
-                return user.SessionId;
+                var session = CreateNewSessionForUser(user);
+
+                return session;
             }
 
             return null;
         }
 
-        private string CreateUser(string username, string password)
+        private static string CreateNewSessionForUser(Global.User user)
+        {
+            string session = Guid.NewGuid().ToString();
+            user.SessionId = session;
+            user.SessionTime = DateTime.Now;
+            UserHelper uh = new UserHelper();
+            uh.UpdateUser(user.Username, user);
+            return session;
+        }
+
+        private static string CreateUser(string username, string password)
         {
             string session = Guid.NewGuid().ToString();
             Global.User user = new Global.User
@@ -73,7 +104,7 @@ namespace NJS_Chat.Helpers
             return session;
         }
 
-        private bool IsUserRegistered(string username)
+        private static bool IsUserRegistered(string username)
         {
             DatabaseHelper dh = new DatabaseHelper();
 

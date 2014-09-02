@@ -24,12 +24,25 @@ namespace NJS_Chat.Helpers
 
         public Global.User GetUserFile(string username)
         {
+            var path = HttpContext.Current.Server.MapPath("~/Database/" + username + ".json");
+            using (StreamReader r = new StreamReader(path))
+            {
+                var serializer = new JavaScriptSerializer();
+
+                string userJson = r.ReadToEnd();
+                return serializer.Deserialize<Global.User>(userJson);
+            }
+        }
+
+        public Global.User GetUserFile(Global.User user)
+        {
+            var path = HttpContext.Current.Server.MapPath("~/Database/" + user.Username + ".json");
             using (StreamReader r = new StreamReader("file.json"))
             {
                 var serializer = new JavaScriptSerializer();
 
-                string user = r.ReadToEnd();
-                return serializer.Deserialize<Global.User>(user);
+                string userJson = r.ReadToEnd();
+                return serializer.Deserialize<Global.User>(userJson);
             }
         }
 
@@ -38,9 +51,16 @@ namespace NJS_Chat.Helpers
             var serializer = new JavaScriptSerializer();
             var serializedList = serializer.Serialize(user);
 
-            var path = HttpContext.Current.Server.MapPath("~/Database/" + user + ".json");
+            var path = HttpContext.Current.Server.MapPath("~/Database/" + username + ".json");
 
             File.WriteAllText(@path, serializedList);
+
+            // Rename file if the username changed
+            if (username != user.Username)
+            {
+                var newPath = HttpContext.Current.Server.MapPath("~/Database/" + user.Username + ".json");
+                File.Move(path, newPath);
+            }
         }
     }
 }
