@@ -1,4 +1,5 @@
-﻿@model NJS_Chat.Models.IndexViewModel
+﻿@using NJS_Chat.Helpers
+@model NJS_Chat.Models.IndexViewModel
 
 @{
     ViewBag.Title = "Index";
@@ -31,8 +32,12 @@
             @*<textarea id="message" name="message" class="form-control" placeholder="Type a message here" autofocus="" style="width: 500px"></textarea>*@
         </div>
         <div class="form-group">
-            <select class="form-control">
-                <option>Everyone</option>
+            <select name="to" id="to" class="form-control">
+                <option value="Everyone">Everyone</option>
+                @foreach (var user in Global.User.UserQue)
+                {
+                    <option value="@user.Username">@user.Username</option>
+                }
             </select>
         </div>
 

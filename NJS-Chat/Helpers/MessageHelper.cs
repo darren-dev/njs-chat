@@ -9,46 +9,44 @@ namespace NJS_Chat.Helpers
         {
             AssertMessageQueNotNull();
 
-            var currMessageQue = GetMessageQue();
-            if (currMessageQue == null) return;
-            
-            AddToMessageQue(message, currMessageQue);
+            AddToMessageQue(message);
         }
 
         internal List<Global.Message> GetMessages()
         {
-            AssertMessageQueNotNull();
-
             return GetMessageQue() ?? new List<Global.Message>();
         }
 
-        private static void AddToMessageQue(Global.Message message, List<Global.Message> currMessageQue)
+        private static void AddToMessageQue(Global.Message message)
         {
-            lock (HttpContext.Current.Application["MessageQue"])
+            lock (Global.Message.MessageQue)
             {
-                lock (currMessageQue)
-                {
-                    currMessageQue.Insert(0, message);
-                    HttpContext.Current.Application["MessageQue"] = currMessageQue;
-                }
+                var currMessageQue = GetMessageQue();
+                if (currMessageQue == null) return;
+
+                currMessageQue.Insert(0, message);
+                Global.Message.MessageQue = currMessageQue;
+
             }
         }
 
         private static List<Global.Message> GetMessageQue()
         {
-            lock (HttpContext.Current.Application["MessageQue"])
+            AssertMessageQueNotNull();
+
+            lock (Global.Message.MessageQue)
             {
                 List<Global.Message> currMessageQue =
-                    HttpContext.Current.Application["MessageQue"] as List<Global.Message>;
+                    Global.Message.MessageQue;
                 return currMessageQue;
             }
         }
 
         private static void AssertMessageQueNotNull()
         {
-            if (HttpContext.Current.Application["MessageQue"] == null)
+            if (Global.Message.MessageQue == null)
             {
-                HttpContext.Current.Application["MessageQue"] = new List<Global.Message>();
+                Global.Message.MessageQue = new List<Global.Message>();
             }
         }
     }

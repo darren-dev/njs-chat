@@ -1,4 +1,5 @@
-﻿@model List<NJS_Chat.Helpers.Global.Message>
+﻿@using NJS_Chat.Helpers
+@model List<NJS_Chat.Helpers.Global.Message>
 
 @{
     ViewBag.Title = "Message";
@@ -54,9 +55,13 @@
 
                 @if (Model.Count > 0)
                 {
-                    foreach (var message in Model)
+                    foreach (Global.Message message in Model)
                     {
-                        <p><strong>@message.From :</strong>@Html.Raw(message.MessageBody.Replace(Environment.NewLine, "<div></div>"))</p>
+                        if (message.To == "Everyone")
+                         {
+                             <p><strong>@message.From :</strong>@Html.Raw(message.MessageBody.Replace(Environment.NewLine, "<div></div>"))</p>
+                         }
+                        if(message.To ==)
                     }
                 }
                 else

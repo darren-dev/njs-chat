@@ -25,11 +25,15 @@ namespace NJS_Chat.Helpers
         public Global.User GetUserFile(string username)
         {
             var path = HttpContext.Current.Server.MapPath("~/Database/" + username + ".json");
+            if (!File.Exists(path))
+            {
+                return new Global.User();
+            }
             using (StreamReader r = new StreamReader(path))
             {
                 var serializer = new JavaScriptSerializer();
 
-                string userJson = r.ReadToEnd();
+                var userJson = r.ReadToEnd();
                 return serializer.Deserialize<Global.User>(userJson);
             }
         }
@@ -37,7 +41,11 @@ namespace NJS_Chat.Helpers
         public Global.User GetUserFile(Global.User user)
         {
             var path = HttpContext.Current.Server.MapPath("~/Database/" + user.Username + ".json");
-            using (StreamReader r = new StreamReader("file.json"))
+            if (!File.Exists(path))
+            {
+                return new Global.User();
+            }
+            using (StreamReader r = new StreamReader(path))
             {
                 var serializer = new JavaScriptSerializer();
 

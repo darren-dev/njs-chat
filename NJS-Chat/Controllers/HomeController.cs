@@ -26,14 +26,27 @@ namespace NJS_Chat.Controllers
         public ActionResult Message()
         {
             MessageHelper mh = new MessageHelper();
+            MessageViewModel mvm = new MessageViewModel();
+            mvm.Messages = mh.GetMessages();
 
-            return View(mh.GetMessages());
+            return View();
         }
 
         [HttpPost]
-        public ActionResult PostMessage(string username, string sessionId, string message)
+        public ActionResult PostMessage(string username, string message, string to)
         {
             UserHelper uh = new UserHelper();
+
+            if (Request.UrlReferrer == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+            if (Request.UrlReferrer.Query.IndexOf("sessionId", StringComparison.Ordinal) == -1)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            string sessionId = Request.UrlReferrer.Query.Substring(Request.UrlReferrer.Query.IndexOf("sessionId", StringComparison.Ordinal) + 10, 36);
             if (uh.GetSessionState(username, sessionId) != UserHelper.UserDetail.Valid)
             {
                 return RedirectToAction("Login", "Auth");
@@ -41,9 +54,9 @@ namespace NJS_Chat.Controllers
 
             Global.Message bMessage = new Global.Message
             {
-                DateSent = DateTime.Now,
-                From = "Test",
-                To = "Everyone",
+                DateSent = DateTime.UtcNow,
+                From = username,
+                To = to,
                 MessageBody = message,
                 MessageColor = Global.MessageColor.Green
             };
@@ -53,7 +66,8 @@ namespace NJS_Chat.Controllers
             mh.QueMessage(bMessage);
 
 
-            return RedirectToAction("Index", "Home", new { username = username, sessionId = sessionId });
+            return RedirectToAction("Index", "Home", new { username, sessionId });
         }
+
     }
 }

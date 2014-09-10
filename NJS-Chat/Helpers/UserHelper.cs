@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace NJS_Chat.Helpers
 {
     public class UserHelper
     {
+        #region Authorization
         public enum UserDetail
         {
             Valid,
@@ -48,7 +50,7 @@ namespace NJS_Chat.Helpers
                 return UserDetail.Inavlid;
             }
 
-            if (user.SessionTime <= DateTime.Now.AddMinutes(-10))
+            if (user.SessionTime <= DateTime.UtcNow.AddMinutes(-10))
             {
                 return UserDetail.SessionExpired;
             }
@@ -80,7 +82,7 @@ namespace NJS_Chat.Helpers
         {
             string session = Guid.NewGuid().ToString();
             user.SessionId = session;
-            user.SessionTime = DateTime.Now;
+            user.SessionTime = DateTime.UtcNow;
             UserHelper uh = new UserHelper();
             uh.UpdateUser(user.Username, user);
             return session;
@@ -91,10 +93,10 @@ namespace NJS_Chat.Helpers
             string session = Guid.NewGuid().ToString();
             Global.User user = new Global.User
             {
-                LoginDate = DateTime.Now,
+                LoginDate = DateTime.UtcNow,
                 Password = password,
                 SessionId = session,
-                SessionTime = DateTime.Now,
+                SessionTime = DateTime.UtcNow,
                 Username = username
             };
 
@@ -109,6 +111,54 @@ namespace NJS_Chat.Helpers
             DatabaseHelper dh = new DatabaseHelper();
 
             return dh.CheckIfUserFileExists(username);
+        }
+        #endregion
+
+        internal void QueUser(Global.User user)
+        {
+            AssertUserQueNotNull();
+
+            AddToUserQue(user);
+        }
+
+        internal void QueUser(string username)
+        {
+            AssertUserQueNotNull();
+
+            DatabaseHelper dh = new DatabaseHelper();
+
+            AddToUserQue(dh.GetUserFile(username));
+        }
+
+        private static void AddToUserQue(Global.User user)
+        {
+            lock (Global.User.UserQue)
+            {
+                var que = GetUserQue();
+
+                que.Add(user);
+                Global.User.UserQue = que;
+            }
+        }
+
+        private static List<Global.User> GetUserQue()
+        {
+            AssertUserQueNotNull();
+
+            lock (Global.User.UserQue)
+            {
+                List<Global.User> currUserQue =
+                    Global.User.UserQue;
+                return currUserQue;
+            }
+        }
+
+        private static void AssertUserQueNotNull()
+        {
+            if (Global.User.UserQue == null)
+            {
+                Global.User.UserQue = new List<Global.User>();
+            }
         }
     }
 }
