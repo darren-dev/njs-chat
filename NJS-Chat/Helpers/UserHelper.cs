@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NJS_Chat.Helpers
 {
@@ -128,6 +129,28 @@ namespace NJS_Chat.Helpers
             DatabaseHelper dh = new DatabaseHelper();
 
             AddToUserQue(dh.GetUserFile(username));
+        }
+
+        internal void DequeUser(string username)
+        {
+            RemoveFromUserQue(username);
+        }
+
+        private static void RemoveFromUserQue(string username)
+        {
+            lock (Global.User.UserQue)
+            {
+                var que = GetUserQue();
+                var toRemove = que.SingleOrDefault(x => x.Username == username);
+
+                if (toRemove == null)
+                {
+                    return;
+                }
+
+                que.Remove(toRemove);
+                Global.User.UserQue = que;
+            }
         }
 
         private static void AddToUserQue(Global.User user)

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using NJS_Chat.Helpers;
 using NJS_Chat.Models;
@@ -7,17 +9,36 @@ namespace NJS_Chat.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index(string username, string sessionId)
+        public ActionResult Index()
         {
+            string username = Session["_Username"].ToString();
+            string sessionId = Session["_Session"].ToString();
+
             UserHelper uh = new UserHelper();
             if (uh.GetSessionState(username, sessionId) != UserHelper.UserDetail.Valid)
             {
                 return RedirectToAction("Login", "Auth");
             }
 
+            List<SelectListItem> items = new List<SelectListItem>
+            {
+                new SelectListItem
+                {
+                    Selected = true,
+                    Text = "Everyone",
+                    Value = "Everyone"
+                }
+            };
+            items.AddRange(Global.User.UserQue.Select(user => new SelectListItem
+            {
+                Selected = false, Text = user.Username, Value = user.Username
+            }));
+
             IndexViewModel ivm = new IndexViewModel
             {
-                Username = username
+                Username = username,
+                Session = sessionId,
+                ToSelectItems = items
             };
 
             return View(ivm);
@@ -29,45 +50,42 @@ namespace NJS_Chat.Controllers
             MessageViewModel mvm = new MessageViewModel();
             mvm.Messages = mh.GetMessages();
 
-            return View();
+            return View(mh.GetMessages());
         }
 
         [HttpPost]
-        public ActionResult PostMessage(string username, string message, string to)
+        public ActionResult PostMessage(IndexViewModel ivm)
         {
             UserHelper uh = new UserHelper();
-
-            if (Request.UrlReferrer == null)
-            {
-                return RedirectToAction("Login", "Auth");
-            }
-            if (Request.UrlReferrer.Query.IndexOf("sessionId", StringComparison.Ordinal) == -1)
+            if (uh.GetSessionState(ivm.Username, ivm.Session) != UserHelper.UserDetail.Valid)
             {
                 return RedirectToAction("Login", "Auth");
             }
 
-            string sessionId = Request.UrlReferrer.Query.Substring(Request.UrlReferrer.Query.IndexOf("sessionId", StringComparison.Ordinal) + 10, 36);
-            if (uh.GetSessionState(username, sessionId) != UserHelper.UserDetail.Valid)
+            if (String.IsNullOrWhiteSpace(ivm.Message))
             {
-                return RedirectToAction("Login", "Auth");
+                return RedirectToAction("Index", "Home");
             }
 
+            SendMessage(ivm);
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        private static void SendMessage(IndexViewModel ivm)
+        {
             Global.Message bMessage = new Global.Message
             {
                 DateSent = DateTime.UtcNow,
-                From = username,
-                To = to,
-                MessageBody = message,
+                From = ivm.Username,
+                To = ivm.To,
+                MessageBody = ivm.Message.Trim(),
                 MessageColor = Global.MessageColor.Green
             };
 
 
             MessageHelper mh = new MessageHelper();
             mh.QueMessage(bMessage);
-
-
-            return RedirectToAction("Index", "Home", new { username, sessionId });
         }
-
     }
 }

@@ -24,21 +24,20 @@
 <div id="pagewrap" style="padding: 10px">
     @using (Html.BeginForm("PostMessage", "Home", FormMethod.Post, new { @class = "form-inline" }))
     {
+        @Html.HiddenFor(model => model.Username)
+        @Html.HiddenFor(model => model.Session)
         <div class="form-group">
-            <input id="username" name="username" class="form-control" placeholder="Username" autocomplete="off" value="@Model.Username" />
+            @Html.TextBoxFor(model => model.Message, new{placeholder="Type a message here", autofocus="", style="width: 500px", autocomplete="off", type="text", @class="form-control"})
         </div>
         <div class="form-group">
-            <input id="message" name="message" class="form-control" placeholder="Type a message here" autofocus="" style="width: 500px" autocomplete="off" type="text" />
-            @*<textarea id="message" name="message" class="form-control" placeholder="Type a message here" autofocus="" style="width: 500px"></textarea>*@
-        </div>
-        <div class="form-group">
-            <select name="to" id="to" class="form-control">
+            @Html.DropDownListFor(model => model.To, Model.ToSelectItems, new{@class="form-control"})
+            @*<select name="To" id="To" class="form-control">
                 <option value="Everyone">Everyone</option>
                 @foreach (var user in Global.User.UserQue)
                 {
                     <option value="@user.Username">@user.Username</option>
                 }
-            </select>
+            </select>*@
         </div>
 
         <button class="btn btn-info">Send</button>

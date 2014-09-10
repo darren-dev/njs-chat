@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Web;
 using System.Web.Mvc;
 using NJS_Chat.Helpers;
 
@@ -17,17 +16,19 @@ namespace NJS_Chat.Controllers
         public ActionResult Login(string username, string password)
         {
             UserHelper uh = new UserHelper();
-            string session = uh.AuthorizeUser(username, password);
+            var sessionId = uh.AuthorizeUser(username, password);
 
-            if (String.IsNullOrEmpty(session))
+            if (String.IsNullOrEmpty(sessionId))
             {
                 return RedirectToAction("Login");
             }
-            HttpSessionStateWrapper sessionState = new HttpSessionStateWrapper(HttpContext.Current.Session);
-            SessionService _SessionRepository = new SessionService(Session);
-            uh.QueUser(username);
-
-            return RedirectToAction("Index", "Home", new { username, sessionId = session });
+            else
+            {
+                Session["_Username"] = username;
+                Session["_Session"] = sessionId;
+                uh.QueUser(username);
+                return RedirectToAction("Index", "Home");
+            }
         }
     }
 }

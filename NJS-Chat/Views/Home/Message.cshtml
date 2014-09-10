@@ -8,7 +8,7 @@
 
 <html>
 <head>
-    <meta http-equiv="refresh" content="9">
+    @*<meta http-equiv="refresh" content="9">*@
     <title></title>
     <link href="~/Content/Plugins/Timer.css" rel="stylesheet" />
     <link href="~/Content/Plugins/Loader.css" rel="stylesheet" />
@@ -58,10 +58,21 @@
                     foreach (Global.Message message in Model)
                     {
                         if (message.To == "Everyone")
-                         {
-                             <p><strong>@message.From :</strong>@Html.Raw(message.MessageBody.Replace(Environment.NewLine, "<div></div>"))</p>
-                         }
-                        if(message.To ==)
+                        {
+                            <p><strong>@message.From:</strong> @Html.Raw(message.MessageBody.Replace(Environment.NewLine, "<div></div>"))</p>
+                        }
+                        else
+                        {
+                            if (message.From == Session["_Username"].ToString())
+                            {
+                                <p><strong>[You -> @message.To]</strong> @Html.Raw(message.MessageBody.Replace(Environment.NewLine, "<div></div>"))</p>
+                            }
+                        }
+                        if (message.To == Session["_Username"].ToString())
+                        {
+                            <p><strong>[@message.From]</strong> @Html.Raw(message.MessageBody.Replace(Environment.NewLine, "<div></div>"))</p>
+                        }
+                        
                     }
                 }
                 else
@@ -71,9 +82,9 @@
             </div>
 
             @*<div id="sidebar">
-                <h2>Latest Links</h2>
-                <a href="http://www.google.co.za" target="_blank"></a>
-            </div>*@
+                    <h2>Latest Links</h2>
+                    <a href="http://www.google.co.za" target="_blank"></a>
+                </div>*@
 
             <div id="footer">
             </div>
