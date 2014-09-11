@@ -11,8 +11,6 @@
     @*<meta http-equiv="refresh" content="9">*@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
-    <link href="~/Content/pure/base-min.css" rel="stylesheet" />
-    <link href="~/Content/pure/pure-min.css" rel="stylesheet" />
     <link href="~/Content/Layout/one-column.css" rel="stylesheet" />
     <link href="~/Content/Plugins/UI.css" rel="stylesheet" />
 </head>
@@ -24,7 +22,7 @@
             <div id="primary">
                 <div id="content" role="main">
                     <form class="pure-form">
-                        <div class="bordered message-body">
+                        <div class="bordered">
                             @if (Model.Count > 0)
                             {
                                 foreach (Global.Message message in Model)

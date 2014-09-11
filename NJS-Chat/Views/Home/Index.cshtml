@@ -5,27 +5,30 @@
 }
 
 @section styles{
-    <link href="~/Content/pure/base-min.css" rel="stylesheet" />
-    <link href="~/Content/pure/pure-min.css" rel="stylesheet" />
     <link href="~/Content/Layout/one-column.css" rel="stylesheet" />
     <link href="~/Content/Plugins/UI.css" rel="stylesheet" />
 }
-<div id="main" style="display: none;">
+
+<div id="main">
     <div class="wrap">
 
         <div id="primary">
-            <div id="content" role="main">
+            <div id="content" role="main" style="margin: 10px 0;">
                 @using (Html.BeginForm("PostMessage", "Home", FormMethod.Post, new { @class = "pure-form" }))
                 {
                     @Html.HiddenFor(model => model.Username)
                     @Html.HiddenFor(model => model.Session)
 
-                    @Html.TextBoxFor(model => model.Message, new { placeholder = "Type a message here", autofocus = "", style = "width: 500px", autocomplete = "off", type = "text" })
+                    @Html.TextBoxFor(model => model.Message, new { placeholder = "Type a message here", @class = "postInput", autofocus = "", autocomplete = "off", type = "text" })
 
-                    @Html.DropDownListFor(model => model.To, Model.ToSelectItems)
+                    <span class="postButtonHolder">
+                        <button class="postButton">Send</button>
+                    </span>
 
 
-                    <button class="pure-button pure-button-primary">Send</button>
+                    @Html.DropDownListFor(model => model.To, Model.ToSelectItems, new { style = "height: 33px;width: 113px;margin-left: 8px;border-color: #CCC;" })
+
+
                 }
             </div><!-- #content -->
         </div><!-- #primary -->

@@ -1,18 +1,79 @@
-﻿body { 
-  font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif;
-  color: #666;
+﻿html, body {
+    font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+    color: #666;
+    margin: 0;
+    padding: 0;
+    height: 100%;
 }
 
-.bordered {
-    border: 1px solid #CCC;
-    padding: 8px;
+button {
+    outline: none;
+    position: relative;
+    left: -3px;
+    background: #207caa;
+    padding: 7px 15px;
+    top: 0;
+    border-radius: 3px 3px;
+    border: none;
+    color: white;
 }
 
 p {
     margin: 0 0 10px 0;
 }
 
-.message-body {
-    height: 100vh;
-    overflow: auto;
+fieldset {
+    border: none;
+    border-top: 1px solid #CCC;
+    padding-top: 20px;
+}
+
+legend {
+    font-size: 18pt;
+}
+
+input {
+    width: 500px;
+    margin: 0 0 0 0;
+    border-radius: 0;
+    height: 29px;
+    padding: 1px 12px;
+    border-radius: 3px 3px;
+    border: 1px solid #CCC;
+}
+
+.bordered {
+    border: 1px solid #CCC;
+    padding: 8px;
+    border-radius: 3px 3px;
+}
+
+.postInput {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.postButton {
+    left: -8px;
+    border-radius: 0;
+    height: 35px;
+    background: none;
+    border: none;
+    color: white;
+    position: relative;
+    cursor: pointer;
+}
+
+.postButtonHolder {
+        outline: none;
+    position: relative;
+    left: -3px;
+    background: #207caa;
+    padding: 7px 15px;
+    top: 1px;
+    border-radius: 3px 3px;
+    border: none;
+    color: white;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
 }

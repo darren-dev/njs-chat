@@ -2,28 +2,25 @@
     ViewBag.Title = "Login";
 }
 
+<link href="~/Content/Plugins/UI.css" rel="stylesheet" />
 
-<link href="~/Content/pure/base-min.css" rel="stylesheet" />
-<link href="~/Content/pure/pure-min.css" rel="stylesheet" />
-
-
-@using (Html.BeginForm("Login", "Auth", FormMethod.Post, new { @class = "pure-form pure-form-aligned" }))
+@using (Html.BeginForm("Login", "Auth", FormMethod.Post))
 {
     <div style="width: 400px; margin: 300px auto;">
         <fieldset>
             <legend>Sign in / Register</legend>
-            <div class="pure-control-group">
+            <div>
                 <label for="username">Username</label>
                 <input type="text" name="username" id="username" placeholder="Username" autocomplete="off">
             </div>
 
-            <div class="pure-control-group">
+            <div style="margin-top: 10px">
                 <label for="password">Password</label>
                 <input type="password" name="password" id="password" placeholder="Password" autocomplete="off">
             </div>
 
-            <div class="pure-controls ">
-                <button type="submit" class="pure-button pure-button-primary">Sign in</button>
+            <div>
+                <button type="submit" style="margin: 13px -2px 0 0; float: right;">Sign in</button>
             </div>
         </fieldset>
         
