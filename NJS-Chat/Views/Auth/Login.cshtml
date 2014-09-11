@@ -1,32 +1,34 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Login";
 }
 
-<link href="~/Content/bootstrap/bootstrap.min.css" rel="stylesheet" />
-<link href="~/Content/bootstrap/bootstrap-theme.min.css" rel="stylesheet" />
+
+<link href="~/Content/pure/base-min.css" rel="stylesheet" />
+<link href="~/Content/pure/pure-min.css" rel="stylesheet" />
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Login", "Auth", FormMethod.Post, new { @class = "pure-form pure-form-aligned" }))
 {
-    <div style="width: 100%">
-        <div class="col-md-4" style="margin: 200px 33%;">
-            <div class="panel panel-default">
-                <div class="panel-heading"><h3 class="panel-title"><strong>Sign In / Register</strong></h3></div>
-                <div class="panel-body">
-                    <form role="form">
-                        <div class="form-group">
-                            <label for="username">Username or Email</label>
-                            <input type="text" class="form-control" name="username" id="username" placeholder="Enter email" autocomplete="off">
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control" name="password" id="password" placeholder="Password" autocomplete="off">
-                        </div>
-                        <button type="submit" class="btn btn-sm btn-default">Sign in</button>
-                    </form>
-                </div>
+    <div style="width: 400px; margin: 300px auto;">
+        <fieldset>
+            <legend>Sign in / Register</legend>
+            <div class="pure-control-group">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" placeholder="Username" autocomplete="off">
             </div>
-        </div>
+
+            <div class="pure-control-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" placeholder="Password" autocomplete="off">
+            </div>
+
+            <div class="pure-controls ">
+                <button type="submit" class="pure-button pure-button-primary">Sign in</button>
+            </div>
+        </fieldset>
+        
+        
+
+        
     </div>
 }

@@ -1,5 +1,5 @@
 ﻿@using NJS_Chat.Helpers
-@model List<NJS_Chat.Helpers.Global.Message>
+@model List<Global.Message>
 
 @{
     ViewBag.Title = "Message";
@@ -9,89 +9,55 @@
 <html>
 <head>
     @*<meta http-equiv="refresh" content="9">*@
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
-    <link href="~/Content/Plugins/Timer.css" rel="stylesheet" />
-    <link href="~/Content/Plugins/Loader.css" rel="stylesheet" />
-    <link href="~/Content/Layout/three-column.css" rel="stylesheet" />
+    <link href="~/Content/pure/base-min.css" rel="stylesheet" />
+    <link href="~/Content/pure/pure-min.css" rel="stylesheet" />
+    <link href="~/Content/Layout/one-column.css" rel="stylesheet" />
+    <link href="~/Content/Plugins/UI.css" rel="stylesheet" />
 </head>
 <body style="overflow: auto;">
-    <form>
-        <div id="pagewrap">
-            <div id="middle" style="width: 90%">
-                @*<div class="secondsOnly">
-                                    <div class="time-part-wrapper">
-                    <div class="time-part seconds tens">
-                            <div class="digit-wrapper">
-                                <span class="digit">0</span>
-                                    <span class="digit">9</span>
-                                    <span class="digit">8</span>
-                                    <span class="digit">7</span>
-                                    <span class="digit">6</span>
-                                    <span class="digit">5</span>
-                                    <span class="digit">4</span>
-                                    <span class="digit">3</span>
-                                    <span class="digit">2</span>
-                                    <span class="digit">1</span>
-                                    <span class="digit">0</span>
-                                                    </div>
-                                                </div>
-                        <div class="time-part seconds ones">
-                            <div class="digit-wrapper">
-                                <span class="digit">0</span>
-                                <span class="digit">9</span>
-                                <span class="digit">8</span>
-                                <span class="digit">7</span>
-                                <span class="digit">6</span>
-                                <span class="digit">5</span>
-                                <span class="digit">4</span>
-                                <span class="digit">3</span>
-                                <span class="digit">2</span>
-                                <span class="digit">1</span>
-                                <span class="digit">0</span>
-                            </div>
-                        </div>
-                                    </div>
-                                </div>*@
 
-                @if (Model.Count > 0)
-                {
-                    foreach (Global.Message message in Model)
-                    {
-                        if (message.To == "Everyone")
-                        {
-                            <p><strong>@message.From:</strong> @Html.Raw(message.MessageBody.Replace(Environment.NewLine, "<div></div>"))</p>
-                        }
-                        else
-                        {
-                            if (message.From == Session["_Username"].ToString())
+    <div id="main">
+        <div class="wrap">
+
+            <div id="primary">
+                <div id="content" role="main">
+                    <form class="pure-form">
+                        <div class="bordered message-body">
+                            @if (Model.Count > 0)
                             {
-                                <p><strong>[You -> @message.To]</strong> @Html.Raw(message.MessageBody.Replace(Environment.NewLine, "<div></div>"))</p>
+                                foreach (Global.Message message in Model)
+                                {
+                                    if (message.To == "Everyone")
+                                    {
+                                        <p><strong>@message.From:</strong> @Html.Raw(message.MessageBody.Replace(Environment.NewLine, "<div></div>"))</p>
+                                    }
+                                    else
+                                    {
+                                        if (message.From == Session["_Username"].ToString())
+                                        {
+                                            <p><strong>[You -> @message.To]</strong> @Html.Raw(message.MessageBody.Replace(Environment.NewLine, "<div></div>"))</p>
+                                        }
+                                    }
+                                    if (message.To == Session["_Username"].ToString())
+                                    {
+                                        <p><strong>[@message.From]</strong> @Html.Raw(message.MessageBody.Replace(Environment.NewLine, "<div></div>"))</p>
+                                    }
+
+                                }
                             }
-                        }
-                        if (message.To == Session["_Username"].ToString())
-                        {
-                            <p><strong>[@message.From]</strong> @Html.Raw(message.MessageBody.Replace(Environment.NewLine, "<div></div>"))</p>
-                        }
-                        
-                    }
-                }
-                else
-                {
-                    <strong> - No new messages -</strong>
-                }
-            </div>
+                            else
+                            {
+                                <strong> - No new messages -</strong>
+                            }
+                        </div>
+                    </form>
+                </div><!-- #content -->
+            </div><!-- #primary -->
 
-            @*<div id="sidebar">
-                    <h2>Latest Links</h2>
-                    <a href="http://www.google.co.za" target="_blank"></a>
-                </div>*@
-
-            <div id="footer">
-            </div>
-
-        </div>
-    </form>
-
+        </div><!--.wrap-->
+    </div><!--#main-->
 </body>
 </html>
 

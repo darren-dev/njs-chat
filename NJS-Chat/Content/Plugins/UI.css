@@ -1,0 +1,18 @@
+﻿body { 
+  font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+  color: #666;
+}
+
+.bordered {
+    border: 1px solid #CCC;
+    padding: 8px;
+}
+
+p {
+    margin: 0 0 10px 0;
+}
+
+.message-body {
+    height: 100vh;
+    overflow: auto;
+}

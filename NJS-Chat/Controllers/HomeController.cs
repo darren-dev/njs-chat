@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using NJS_Chat.Helpers;
 using NJS_Chat.Models;
@@ -56,7 +57,13 @@ namespace NJS_Chat.Controllers
         [HttpPost]
         public ActionResult PostMessage(IndexViewModel ivm)
         {
+            if (ivm == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
             UserHelper uh = new UserHelper();
+
             if (uh.GetSessionState(ivm.Username, ivm.Session) != UserHelper.UserDetail.Valid)
             {
                 return RedirectToAction("Login", "Auth");
@@ -67,6 +74,9 @@ namespace NJS_Chat.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
+            // Strip out HTML
+            ivm.Message = Regex.Replace(ivm.Message, @"<[^>]*>", String.Empty);
+            // Send message
             SendMessage(ivm);
 
             return RedirectToAction("Index", "Home");

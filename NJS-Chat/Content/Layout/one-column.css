@@ -1,0 +1,10 @@
+﻿.wrap{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1em;
+}
+ 
+#primary{
+    max-width: 750px;
+    margin: 0 auto;
+}
