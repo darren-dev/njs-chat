@@ -1,0 +1,51 @@
+﻿.adminMenu ul {
+    display: none;
+    position: absolute;
+    padding: 0;
+    list-style: none;
+    margin: 0;
+    background: white;
+    border: 1px dashed #ddd;
+    border-top: none;
+    margin-top: 2px;
+    border-bottom-left-radius: 3px 3px;
+    border-bottom-right-radius: 3px 3px;
+}
+
+    .adminMenu ul li {
+        padding: 2px;
+        cursor: pointer;
+    }
+
+.adminMenu:hover ul {
+    display: block; /* display the dropdown */
+}
+
+    .adminMenu:hover ul li:hover {
+        background: #EBEEED;
+    }
+
+/* unvisited link */
+.adminMenu ul li a:link {
+    color: #999;
+    text-decoration: none;
+}
+
+/* visited link */
+.adminMenu ul li a:visited {
+    color: #999;
+    text-decoration: none;
+}
+
+/* mouse over link */
+.adminMenu ul li a:hover {
+    color: #999;
+    text-decoration: none;
+}
+
+/* selected link */
+.adminMenu ul li a:active {
+    color: #999;
+    text-decoration: none;
+    text-decoration: none;
+}

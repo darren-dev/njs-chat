@@ -16,6 +16,7 @@ button {
     border-radius: 3px 3px;
     border: none;
     color: white;
+    cursor: pointer;
 }
 
 p {
@@ -46,34 +47,4 @@ input {
     border: 1px solid #CCC;
     padding: 8px;
     border-radius: 3px 3px;
-}
-
-.postInput {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-}
-
-.postButton {
-    left: -8px;
-    border-radius: 0;
-    height: 35px;
-    background: none;
-    border: none;
-    color: white;
-    position: relative;
-    cursor: pointer;
-}
-
-.postButtonHolder {
-        outline: none;
-    position: relative;
-    left: -3px;
-    background: #207caa;
-    padding: 7px 15px;
-    top: 1px;
-    border-radius: 3px 3px;
-    border: none;
-    color: white;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
 }

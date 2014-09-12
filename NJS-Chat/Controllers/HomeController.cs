@@ -12,11 +12,8 @@ namespace NJS_Chat.Controllers
     {
         public ActionResult Index()
         {
-            string username = Session["_Username"].ToString();
-            string sessionId = Session["_Session"].ToString();
-
-            UserHelper uh = new UserHelper();
-            if (uh.GetSessionState(username, sessionId) != UserHelper.UserDetail.Valid)
+            var session = UserSessionHelper.GetUserSession();
+            if (String.IsNullOrEmpty(session.Username) || string.IsNullOrEmpty(session.SessionId))
             {
                 return RedirectToAction("Login", "Auth");
             }
@@ -32,24 +29,22 @@ namespace NJS_Chat.Controllers
             };
             items.AddRange(Global.User.UserQue.Select(user => new SelectListItem
             {
-                Selected = false, Text = user.Username, Value = user.Username
+                Selected = false,
+                Text = user.Username,
+                Value = user.Username
             }));
 
             IndexViewModel ivm = new IndexViewModel
             {
-                Username = username,
-                Session = sessionId,
                 ToSelectItems = items
             };
 
             return View(ivm);
         }
-
+        
         public ActionResult Message()
         {
             MessageHelper mh = new MessageHelper();
-            MessageViewModel mvm = new MessageViewModel();
-            mvm.Messages = mh.GetMessages();
 
             return View(mh.GetMessages());
         }
@@ -59,13 +54,30 @@ namespace NJS_Chat.Controllers
         {
             if (ivm == null)
             {
+                TempData["Errors"] = new List<String>
+                {
+                    "Session Expired"
+                };
                 return RedirectToAction("Login", "Auth");
             }
 
-            UserHelper uh = new UserHelper();
-
-            if (uh.GetSessionState(ivm.Username, ivm.Session) != UserHelper.UserDetail.Valid)
+            UserSessionHelper ush = new UserSessionHelper();
+            if (!ush.IsUserActive())
             {
+                TempData["Errors"] = new List<String>
+                {
+                    "Logged out for inactivity"
+                };
+                return RedirectToAction("Login", "Auth");
+            }
+
+            var session = UserSessionHelper.GetUserSession();
+            if (String.IsNullOrEmpty(session.Username) || string.IsNullOrEmpty(session.SessionId))
+            {
+                TempData["Errors"] = new List<String>
+                {
+                    "Session Expired"
+                };
                 return RedirectToAction("Login", "Auth");
             }
 
@@ -77,25 +89,9 @@ namespace NJS_Chat.Controllers
             // Strip out HTML
             ivm.Message = Regex.Replace(ivm.Message, @"<[^>]*>", String.Empty);
             // Send message
-            SendMessage(ivm);
+            MessageHelper.SendMessage(ivm, session.Username);
 
             return RedirectToAction("Index", "Home");
-        }
-
-        private static void SendMessage(IndexViewModel ivm)
-        {
-            Global.Message bMessage = new Global.Message
-            {
-                DateSent = DateTime.UtcNow,
-                From = ivm.Username,
-                To = ivm.To,
-                MessageBody = ivm.Message.Trim(),
-                MessageColor = Global.MessageColor.Green
-            };
-
-
-            MessageHelper mh = new MessageHelper();
-            mh.QueMessage(bMessage);
         }
     }
 }

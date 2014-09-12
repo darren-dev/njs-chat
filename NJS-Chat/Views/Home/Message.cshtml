@@ -13,6 +13,9 @@
     <title></title>
     <link href="~/Content/Layout/one-column.css" rel="stylesheet" />
     <link href="~/Content/Plugins/UI.css" rel="stylesheet" />
+    <link href="~/Content/Plugins/MessageUI.css" rel="stylesheet" />
+    <link href="~/Content/Plugins/AdminUI.css" rel="stylesheet" />
+
 </head>
 <body style="overflow: auto;">
 
@@ -29,7 +32,30 @@
                                 {
                                     if (message.To == "Everyone")
                                     {
-                                        <p><strong>@message.From:</strong> @Html.Raw(message.MessageBody.Replace(Environment.NewLine, "<div></div>"))</p>
+                                        <p>
+                                            <div id="messageTitleHolder" class="adminMenu">
+                                                <span style="max-width: 100px">
+                                                    <strong style="cursor: default">@message.From</strong>
+                                                </span>
+                                                <ul>
+                                                    <li>
+                                                        @Html.ActionLink("Ban User", "BanUser", "Admin", new { username = message.From }, null)
+                                                    </li>
+                                                    <li>
+                                                        @Html.ActionLink("Blacklist Username", "BlacklistUser", "Admin", new { username = message.From }, null)
+                                                    </li>
+                                                    <li>
+                                                        @Html.ActionLink("Promote User", "PromoteUser", "Admin", new { username = message.From }, null)
+                                                    </li>
+                                                    <li>
+                                                        @Html.ActionLink("Demote User", "DemoteUser", "Admin", new { username = message.From }, null)
+                                                    </li>
+                                                </ul>
+
+                                                <span style="font-size: 12px; color:#C7CACE">(@message.DateSent.ToLocalTime().ToString("t"))</span>
+                                            </div>
+                                            @Html.Raw(message.MessageBody.Replace(Environment.NewLine, "<div></div>"))
+                                        </p>
                                     }
                                     else
                                     {
@@ -58,6 +84,3 @@
     </div><!--#main-->
 </body>
 </html>
-
-
-

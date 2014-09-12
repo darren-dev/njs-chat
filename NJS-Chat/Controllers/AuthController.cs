@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using NJS_Chat.Helpers;
 
@@ -15,6 +17,12 @@ namespace NJS_Chat.Controllers
         [HttpPost]
         public ActionResult Login(string username, string password)
         {
+            // Validate username and password
+            if (!ValidateUsername(username) || !ValidatePassword(password))
+            {
+                return RedirectToAction("Login");
+            }
+
             UserHelper uh = new UserHelper();
             var sessionId = uh.AuthorizeUser(username, password);
 
@@ -29,6 +37,77 @@ namespace NJS_Chat.Controllers
                 uh.QueUser(username);
                 return RedirectToAction("Index", "Home");
             }
+        }
+
+        private bool ValidatePassword(string password)
+        {
+            bool valid = true;
+            var errors = TempData["Errors"] as List<String> ?? new List<string>();
+
+            // Make sure the password is not empty
+            if (String.IsNullOrEmpty(password))
+            {
+                errors.Add("Password can not be empty.");
+                TempData["Errors"] = errors;
+
+                return false;
+            }
+
+            TempData["Errors"] = errors;
+            return valid;
+        }
+
+        private bool ValidateUsername(string username)
+        {
+            bool valid = true;
+            var errors = TempData["Errors"] as List<String> ?? new List<string>();
+
+            // Make sure the username is not empty
+            if (String.IsNullOrEmpty(username))
+            {
+                errors.Add("Username can not be empty.");
+                TempData["Errors"] = errors;
+
+                return false;
+            }
+
+            // Make sure the username hasn't been blacklisted
+            var uh = new UserHelper();
+            if (uh.IsUsernameBlacklisted(username))
+            {
+                errors.Add("Username has been Blacklisted.");
+                TempData["Errors"] = errors;
+
+                return false;
+            }
+
+            // Make sure the user isn't banned
+            if (uh.IsUserBanned(username))
+            {
+                errors.Add("User has been Banned.");
+                TempData["Errors"] = errors;
+
+                return false;
+            }
+
+            // Make sure the name length is correct
+            if (username.Length < 3 || username.Length > 20)
+            {
+                errors.Add("Username needs to be between 3 and 20 characters.");
+                valid = false;
+            }
+
+            // Make sure name doesn't contain a number
+            if(Regex.IsMatch(username, @"\d"))
+            {
+                errors.Add("Username can not contain a number.");
+                valid = false;
+            }
+
+            
+
+            TempData["Errors"] = errors;
+            return valid;
         }
     }
 }

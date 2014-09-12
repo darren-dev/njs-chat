@@ -7,14 +7,14 @@ namespace NJS_Chat.Helpers
     public class UserHelper
     {
         #region Authorization
-        public enum UserDetail
+        internal enum UserDetail
         {
             Valid,
             Inavlid,
             SessionExpired
         }
 
-        public string AuthorizeUser(string username, string password)
+        internal string AuthorizeUser(string username, string password)
         {
             string session;
 
@@ -30,13 +30,13 @@ namespace NJS_Chat.Helpers
             return session;
         }
 
-        public void UpdateUser(string username, Global.User user)
+        internal void UpdateUser(string username, Global.User user)
         {
             DatabaseHelper dh = new DatabaseHelper();
             dh.UpdateUser(username, user);
         }
 
-        public UserDetail GetSessionState(string username, string sessionId)
+        internal UserDetail GetSessionState(string username, string sessionId)
         {
             if (String.IsNullOrEmpty(username) || String.IsNullOrEmpty(sessionId))
             {
@@ -57,6 +57,39 @@ namespace NJS_Chat.Helpers
             }
 
             return UserDetail.Valid;
+        }
+
+        public void BanUser(string username)
+        {
+            DatabaseHelper dh = new DatabaseHelper();
+            var user = dh.GetUserFile(username);
+            if (user == null)
+            {
+                return;
+            }
+
+            user.IsBanned = true;
+            dh.UpdateUser(username, user);
+        }
+
+        internal void BlacklistUsername(string username)
+        {
+            DatabaseHelper dh = new DatabaseHelper();
+            dh.AddUserToBlacklist(username);
+        }
+
+        internal bool IsUsernameBlacklisted(string username)
+        {
+            DatabaseHelper dh = new DatabaseHelper();
+            return dh.GetAllBlacklistUsernames().Contains(username);
+        }
+
+        internal bool IsUserBanned(string username)
+        {
+            DatabaseHelper dh = new DatabaseHelper();
+            var user = dh.GetUserFile(username);
+
+            return user != null && user.IsBanned;
         }
 
         private static string GetUserSession(string username, string password)
@@ -98,7 +131,9 @@ namespace NJS_Chat.Helpers
                 Password = password,
                 SessionId = session,
                 SessionTime = DateTime.UtcNow,
-                Username = username
+                Username = username,
+                IsBanned = false,
+                UserGroup = Global.UserGroup.Default
             };
 
             DatabaseHelper dh = new DatabaseHelper();
@@ -111,10 +146,11 @@ namespace NJS_Chat.Helpers
         {
             DatabaseHelper dh = new DatabaseHelper();
 
-            return dh.CheckIfUserFileExists(username);
+            return dh.CheckIfFileExists(username);
         }
         #endregion
 
+        #region User
         internal void QueUser(Global.User user)
         {
             AssertUserQueNotNull();
@@ -160,7 +196,7 @@ namespace NJS_Chat.Helpers
                 var que = GetUserQue();
 
                 que.Add(user);
-                Global.User.UserQue = que;
+                Global.User.UserQue = que.Distinct().ToList();
             }
         }
 
@@ -183,5 +219,6 @@ namespace NJS_Chat.Helpers
                 Global.User.UserQue = new List<Global.User>();
             }
         }
+        #endregion
     }
 }

@@ -3,12 +3,26 @@
 }
 
 <link href="~/Content/Plugins/UI.css" rel="stylesheet" />
+<link href="~/Content/Plugins/AuthUI.css" rel="stylesheet" />
 
 @using (Html.BeginForm("Login", "Auth", FormMethod.Post))
 {
-    <div style="width: 400px; margin: 300px auto;">
+    <div style="width: 520px; margin: 300px auto;">
         <fieldset>
             <legend>Sign in / Register</legend>
+
+            @{
+    var errors = TempData["Errors"] as List<String>;
+            }
+            @if (errors != null)
+            {
+                <ul>
+                    @foreach (var error in errors)
+                    {
+                        <li>@error</li>
+                    }
+                </ul>
+            }
             <div>
                 <label for="username">Username</label>
                 <input type="text" name="username" id="username" placeholder="Username" autocomplete="off">
@@ -17,15 +31,16 @@
             <div style="margin-top: 10px">
                 <label for="password">Password</label>
                 <input type="password" name="password" id="password" placeholder="Password" autocomplete="off">
+                <small>Passwords are <strong>not</strong> currently encrypted - Don't use a proper password.</small>
             </div>
 
             <div>
                 <button type="submit" style="margin: 13px -2px 0 0; float: right;">Sign in</button>
             </div>
         </fieldset>
-        
-        
 
-        
+
+
+
     </div>
 }

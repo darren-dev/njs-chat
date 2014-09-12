@@ -1,10 +1,27 @@
-﻿using System.Collections.Generic;
-using System.Web;
+﻿using System;
+using System.Collections.Generic;
+using NJS_Chat.Models;
 
 namespace NJS_Chat.Helpers
 {
     public class MessageHelper
     {
+        internal static void SendMessage(IndexViewModel ivm, string username)
+        {
+            Global.Message bMessage = new Global.Message
+            {
+                DateSent = DateTime.UtcNow,
+                From = username,
+                To = ivm.To,
+                MessageBody = ivm.Message.Trim(),
+                MessageColor = Global.MessageColor.Green
+            };
+
+
+            MessageHelper mh = new MessageHelper();
+            mh.QueMessage(bMessage);
+        }
+
         internal void QueMessage(Global.Message message)
         {
             AssertMessageQueNotNull();

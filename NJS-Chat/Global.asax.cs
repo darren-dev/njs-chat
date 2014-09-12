@@ -7,7 +7,7 @@ using NJS_Chat.Helpers;
 
 namespace NJS_Chat
 {
-    public class MvcApplication : System.Web.HttpApplication
+    public class MvcApplication : HttpApplication
     {
         protected void Application_Start()
         {
@@ -27,6 +27,8 @@ namespace NJS_Chat
         {
             HttpContext.Current.Session.Add("_Username", String.Empty);
             HttpContext.Current.Session.Add("_Session", String.Empty);
+            HttpContext.Current.Session.Add("_LoginTime", DateTime.UtcNow);
+            HttpContext.Current.Session.Add("_LastMessageTime", DateTime.UtcNow);
         }
 
         protected void Session_End(object sender, EventArgs e)

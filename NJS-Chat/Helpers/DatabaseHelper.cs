@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Web;
 using System.Web.Script.Serialization;
 
@@ -6,7 +8,22 @@ namespace NJS_Chat.Helpers
 {
     public class DatabaseHelper
     {
-        public void CreateUserFile(Global.User user)
+        #region General
+        internal bool CheckIfFileExists(string username)
+        {
+            var path = HttpContext.Current.Server.MapPath("~/Database/" + username + ".json");
+            return File.Exists(path);
+        }
+
+        internal void CreateFile(string fileName)
+        {
+            var path = HttpContext.Current.Server.MapPath("~/Database/" + fileName + ".json");
+            File.WriteAllText(@path, String.Empty);
+        }
+        #endregion
+
+        #region User
+        internal void CreateUserFile(Global.User user)
         {
             var serializer = new JavaScriptSerializer();
             var serializedList = serializer.Serialize(user);
@@ -16,13 +33,7 @@ namespace NJS_Chat.Helpers
             File.WriteAllText(@path, serializedList);
         }
 
-        public bool CheckIfUserFileExists(string username)
-        {
-            var path = HttpContext.Current.Server.MapPath("~/Database/" + username + ".json");
-            return File.Exists(path);
-        }
-
-        public Global.User GetUserFile(string username)
+        internal Global.User GetUserFile(string username)
         {
             var path = HttpContext.Current.Server.MapPath("~/Database/" + username + ".json");
             if (!File.Exists(path))
@@ -38,7 +49,7 @@ namespace NJS_Chat.Helpers
             }
         }
 
-        public Global.User GetUserFile(Global.User user)
+        internal Global.User GetUserFile(Global.User user)
         {
             var path = HttpContext.Current.Server.MapPath("~/Database/" + user.Username + ".json");
             if (!File.Exists(path))
@@ -54,7 +65,7 @@ namespace NJS_Chat.Helpers
             }
         }
 
-        public void UpdateUser(string username, Global.User user)
+        internal void UpdateUser(string username, Global.User user)
         {
             var serializer = new JavaScriptSerializer();
             var serializedList = serializer.Serialize(user);
@@ -70,5 +81,46 @@ namespace NJS_Chat.Helpers
                 File.Move(path, newPath);
             }
         }
+        #endregion
+
+        internal void AddUserToBlacklist(string username)
+        {
+            if (!CheckIfFileExists("_Blacklist"))
+            {
+                CreateFile("_Blacklist");
+            }
+
+            var path = HttpContext.Current.Server.MapPath("~/Database/_Blacklist.json");
+            List<string> blacklist = GetAllBlacklistUsernames();
+
+            if (!blacklist.Contains(username))
+            {
+                blacklist.Add(username);
+            }
+
+
+            var serializer = new JavaScriptSerializer();
+            var serializedList = serializer.Serialize(blacklist);
+            File.WriteAllText(@path, serializedList);
+        }
+
+        internal List<String> GetAllBlacklistUsernames()
+        {
+            if (!CheckIfFileExists("_Blacklist"))
+            {
+                CreateFile("_Blacklist");
+            }
+
+            var path = HttpContext.Current.Server.MapPath("~/Database/_Blacklist.json");
+            var serializer = new JavaScriptSerializer();
+
+            using (StreamReader r = new StreamReader(path))
+            {
+                string blacklistJson = r.ReadToEnd();
+                var deserialized =  serializer.Deserialize<List<String>>(blacklistJson);
+
+                return deserialized ?? new List<string>();
+            }
+        } 
     }
 }

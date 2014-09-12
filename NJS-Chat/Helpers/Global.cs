@@ -37,6 +37,13 @@ namespace NJS_Chat.Helpers
             Pink
         }
 
+        public enum UserGroup
+        {
+            Default,
+            Moderator,
+            Administrator
+        }
+
         public class User
         {
             public string SessionId { get; set; }
@@ -44,6 +51,8 @@ namespace NJS_Chat.Helpers
             public string Password { get; set; }
             public DateTime LoginDate { get; set; }
             public DateTime SessionTime { get; set; }
+            public Boolean IsBanned { get; set; }
+            public UserGroup UserGroup { get; set; }
 
             public static List<User> UserQue
             {
@@ -56,6 +65,12 @@ namespace NJS_Chat.Helpers
                     HttpContext.Current.Application["UserQue"] = value;
                 }
             }
+        }
+
+        public class UserSession : User
+        {
+            public DateTime LoginTime { get; set; }
+            public DateTime LastMessageTime { get; set; }
         }
     }
 }
