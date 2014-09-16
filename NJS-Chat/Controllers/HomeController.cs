@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
@@ -15,6 +16,15 @@ namespace NJS_Chat.Controllers
             var session = UserSessionHelper.GetUserSession();
             if (String.IsNullOrEmpty(session.Username) || string.IsNullOrEmpty(session.SessionId))
             {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            if (UserHelper.IsUserKicked(session.Username))
+            {
+                TempData["Errors"] = new List<String>
+                {
+                    "You have been kicked."
+                };
                 return RedirectToAction("Login", "Auth");
             }
 
@@ -44,12 +54,36 @@ namespace NJS_Chat.Controllers
         
         public ActionResult Message()
         {
+            UserSessionHelper ush = new UserSessionHelper();
+            if (!ush.IsUserActive())
+            {
+                TempData["Errors"] = new List<String>
+                {
+                    "Logged out for inactivity"
+                };
+
+                return RedirectToAction("Login", "Auth");
+            }
+
+            var session = UserSessionHelper.GetUserSession();
+            if (UserHelper.IsUserKicked(session.Username))
+            {
+                TempData["Errors"] = new List<String>
+                {
+                    "You have been kicked."
+                };
+                return Content("You have been kicked from the chat.");
+            
+            }
+
+
             MessageHelper mh = new MessageHelper();
 
             return View(mh.GetMessages());
         }
 
         [HttpPost]
+        [Browsable(false)]
         public ActionResult PostMessage(IndexViewModel ivm)
         {
             if (ivm == null)
@@ -72,6 +106,15 @@ namespace NJS_Chat.Controllers
             }
 
             var session = UserSessionHelper.GetUserSession();
+            if (UserHelper.IsUserKicked(session.Username))
+            {
+                TempData["Errors"] = new List<String>
+                {
+                    "You have been kicked."
+                };
+                return RedirectToAction("Login", "Auth");
+            }
+
             if (String.IsNullOrEmpty(session.Username) || string.IsNullOrEmpty(session.SessionId))
             {
                 TempData["Errors"] = new List<String>

@@ -58,7 +58,7 @@ namespace NJS_Chat.Helpers
 
         internal bool IsUserActive()
         {
-            DateTime messageTime = DateTime.Parse(HttpContext.Current.Session["_LastMessageTime"].ToString()).AddMinutes(10);
+            DateTime messageTime = DateTime.Parse(HttpContext.Current.Session["_LastMessageTime"].ToString()).AddSeconds(Global.MaxIdleTime);
             DateTime currentTime = DateTime.UtcNow;
 
             int result = DateTime.Compare(messageTime, currentTime);

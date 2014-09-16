@@ -24,7 +24,8 @@ namespace NJS_Chat.Controllers
             }
 
             UserHelper uh = new UserHelper();
-            var sessionId = uh.AuthorizeUser(username, password);
+            Global.UserGroup userGroup;
+            var sessionId = uh.AuthorizeUser(username, password, out userGroup);
 
             if (String.IsNullOrEmpty(sessionId))
             {
@@ -34,6 +35,7 @@ namespace NJS_Chat.Controllers
             {
                 Session["_Username"] = username;
                 Session["_Session"] = sessionId;
+                Session["_UserGroup"] = userGroup;
                 uh.QueUser(username);
                 return RedirectToAction("Index", "Home");
             }
@@ -81,10 +83,26 @@ namespace NJS_Chat.Controllers
                 return false;
             }
 
+            var banStatus = uh.IsUserBanned(username);
             // Make sure the user isn't banned
-            if (uh.IsUserBanned(username))
+            if (banStatus.IsBanned != null && (bool)banStatus.IsBanned)
             {
-                errors.Add("User has been Banned.");
+                if (banStatus.BannedDate.HasValue)
+                {
+                    errors.Add("User Banned on: " + banStatus.BannedDate.Value.ToLocalTime().ToString("F"));
+                }
+                else
+                {
+                    errors.Add("User Banned");
+                }
+
+                if (!String.IsNullOrEmpty(banStatus.BanReason))
+                {
+                    errors.Add("Ban Reason: " + banStatus.BanReason);
+                }
+
+                errors.Add("Banned until: " + (banStatus.BanLiftDate.HasValue ? banStatus.BanLiftDate.Value.ToLocalTime().ToString("D") : "Forever"));
+
                 TempData["Errors"] = errors;
 
                 return false;
@@ -98,13 +116,13 @@ namespace NJS_Chat.Controllers
             }
 
             // Make sure name doesn't contain a number
-            if(Regex.IsMatch(username, @"\d"))
+            if (Regex.IsMatch(username, @"\d"))
             {
                 errors.Add("Username can not contain a number.");
                 valid = false;
             }
 
-            
+
 
             TempData["Errors"] = errors;
             return valid;

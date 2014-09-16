@@ -7,3 +7,12 @@ NJS-Chat/obj/Debug/NJS-Chat.csproj.FileListAbsolute.txt
 NJS-Chat/obj/Debug/NJS-Chat.csprojResolveAssemblyReference.cache
 NJS-Chat/obj/Debug/NJS-Chat.dll
 NJS-Chat/obj/Debug/NJS-Chat.pdb
+NJS-Chat/obj/Release/Package/PackageTmp/Content/Layout/one-column.css
+NJS-Chat/obj/Release/Package/PackageTmp/Content/Plugins/AdminUI.css
+NJS-Chat/obj/Release/Package/PackageTmp/Content/Plugins/AuthUI.css
+NJS-Chat/obj/Release/Package/PackageTmp/Content/Plugins/HomeUI.css
+NJS-Chat/obj/Release/Package/PackageTmp/Content/Plugins/MessageUI.css
+NJS-Chat/obj/Release/Package/PackageTmp/Content/Plugins/UI.css
+NJS-Chat/obj/Release/Package/PackageTmp/Views/Auth/Login.cshtml
+NJS-Chat/obj/
+NJS-Chat/bin/

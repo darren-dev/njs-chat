@@ -5,7 +5,7 @@ namespace NJS_Chat.Models
 {
     public class MessageViewModel
     {
-        public List<Global.Message> Messages { get; set; }
-        public string CurrentUser { get; set; }
+        internal List<Global.Message> Messages { get; set; }
+        internal string CurrentUser { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿@model NJS_Chat.Models.IndexViewModel
+﻿@using NJS_Chat.Helpers
+@model NJS_Chat.Models.IndexViewModel
 
 @{
     ViewBag.Title = "Index";
@@ -8,6 +9,26 @@
     <link href="~/Content/Layout/one-column.css" rel="stylesheet" />
     <link href="~/Content/Plugins/UI.css" rel="stylesheet" />
     <link href="~/Content/Plugins/HomeUI.css" rel="stylesheet" />
+
+    <style>
+        #onlineList {
+            display: none;
+            width: auto;
+            height: auto;
+        }
+
+        a.showOnlineList {
+            cursor: pointer;
+        }
+
+            a.showOnlineList:focus + #onlineList {
+                display: block;
+            }
+
+        .usernameList {
+            margin-right: 20px;
+        }
+    </style>
 }
 
 <div id="main">
@@ -17,9 +38,6 @@
             <div id="content" role="main" style="margin: 10px 0;">
                 @using (Html.BeginForm("PostMessage", "Home", FormMethod.Post, new { @class = "pure-form" }))
                 {
-                    @*@Html.HiddenFor(model => model.Username)
-                        @Html.HiddenFor(model => model.Session)*@
-
                     @Html.TextBoxFor(model => model.Message, new { placeholder = "Type a message here", @class = "postInput", autofocus = "", autocomplete = "off", type = "text" })
 
                     <span class="postButtonHolder">
@@ -31,12 +49,35 @@
 
 
                 }
+                <a tabindex="0" class="showOnlineList">Show Online List</a>
+                <div id="onlineList">
+                    @foreach (var user in Global.User.UserQue)
+                    {
+                        switch (user.UserGroup)
+                        {
+                            case Global.UserGroup.Administrator:
+                                <strong title="Administrator" style="cursor: pointer" class="usernameList">
+                                    @(user.Username)
+                                </strong>
+                                break;
+                            case Global.UserGroup.Moderator:
+                            <em title="Moderator" style="cursor: pointer" class="usernameList">
+                                @(user.Username)
+                            </em>
+                                break;
+                            default:
+                            <span class="usernameList">
+                                @(user.Username)
+                            </span>
+                                break;
+                        }
+                    }
+                    <p><small>Reload page to refresh online list</small></p>
+                </div>
             </div><!-- #content -->
         </div><!-- #primary -->
 
     </div><!--.wrap-->
 </div><!--#main-->
 
-<iframe id="messageFrame" width="100%" height="100%" frameborder="0" src="@Url.Action("Message", "Home")"></iframe>
-
-
+    <iframe id="messageFrame" width="100%" height="100%" frameborder="0" src="@Url.Action("Message", "Home")"></iframe>

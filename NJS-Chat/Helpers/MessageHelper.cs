@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web;
 using NJS_Chat.Models;
 
 namespace NJS_Chat.Helpers
@@ -18,6 +19,7 @@ namespace NJS_Chat.Helpers
             };
 
 
+            HttpContext.Current.Session["_LastMessageTime"] = DateTime.UtcNow;
             MessageHelper mh = new MessageHelper();
             mh.QueMessage(bMessage);
         }

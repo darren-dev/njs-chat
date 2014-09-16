@@ -10,7 +10,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/NJS-Chat.dll">
-      <publishTime>08/27/2014 16:07:48</publishTime>
+      <publishTime>09/16/2014 11:33:50</publishTime>
     </File>
     <File Include="bin/System.Web.Helpers.dll">
       <publishTime>08/25/2014 15:30:33</publishTime>
@@ -36,14 +36,32 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Content/bootstrap/bootstrap.min.css">
       <publishTime>08/26/2014 13:09:22</publishTime>
     </File>
+    <File Include="Content/Layout/one-column.css">
+      <publishTime>09/11/2014 10:23:47</publishTime>
+    </File>
     <File Include="Content/Layout/three-column.css">
       <publishTime>08/26/2014 13:14:43</publishTime>
+    </File>
+    <File Include="Content/Plugins/AdminUI.css">
+      <publishTime>09/12/2014 14:50:18</publishTime>
+    </File>
+    <File Include="Content/Plugins/AuthUI.css">
+      <publishTime>09/12/2014 13:45:30</publishTime>
+    </File>
+    <File Include="Content/Plugins/HomeUI.css">
+      <publishTime>09/12/2014 13:45:00</publishTime>
     </File>
     <File Include="Content/Plugins/Loader.css">
       <publishTime>08/25/2014 16:26:38</publishTime>
     </File>
+    <File Include="Content/Plugins/MessageUI.css">
+      <publishTime>09/12/2014 13:44:21</publishTime>
+    </File>
     <File Include="Content/Plugins/Timer.css">
       <publishTime>08/27/2014 07:33:51</publishTime>
+    </File>
+    <File Include="Content/Plugins/UI.css">
+      <publishTime>09/15/2014 15:20:42</publishTime>
     </File>
     <File Include="Global.asax">
       <publishTime>08/25/2014 15:30:32</publishTime>
@@ -51,14 +69,20 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="packages.config">
       <publishTime>08/25/2014 15:30:33</publishTime>
     </File>
+    <File Include="Views/Admin/BanUser.cshtml">
+      <publishTime>09/16/2014 10:14:54</publishTime>
+    </File>
+    <File Include="Views/Auth/Login.cshtml">
+      <publishTime>09/12/2014 13:45:39</publishTime>
+    </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>08/27/2014 15:58:59</publishTime>
+      <publishTime>09/16/2014 11:25:26</publishTime>
     </File>
     <File Include="Views/Home/Message.cshtml">
-      <publishTime>08/27/2014 16:02:12</publishTime>
+      <publishTime>09/16/2014 11:28:07</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>08/26/2014 12:20:57</publishTime>
+      <publishTime>09/11/2014 08:01:22</publishTime>
     </File>
     <File Include="Views/web.config">
       <publishTime>08/25/2014 15:30:32</publishTime>
@@ -67,7 +91,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/25/2014 15:35:41</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>08/27/2014 16:07:49</publishTime>
+      <publishTime>09/16/2014 11:33:50</publishTime>
     </File>
   </ItemGroup>
 </Project>

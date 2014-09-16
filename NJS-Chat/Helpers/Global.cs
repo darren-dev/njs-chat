@@ -6,6 +6,9 @@ namespace NJS_Chat.Helpers
 {
     public static class Global
     {
+        public const int MaxIdleTime = 15;
+
+
         public class Message
         {
             public string MessageBody { get; set; }
@@ -52,6 +55,9 @@ namespace NJS_Chat.Helpers
             public DateTime LoginDate { get; set; }
             public DateTime SessionTime { get; set; }
             public Boolean IsBanned { get; set; }
+            public DateTime BannedDate { get; set; }
+            public string BannedReason { get; set; }
+            public DateTime? BannedLiftDate { get; set; }
             public UserGroup UserGroup { get; set; }
 
             public static List<User> UserQue
@@ -65,12 +71,24 @@ namespace NJS_Chat.Helpers
                     HttpContext.Current.Application["UserQue"] = value;
                 }
             }
+
+            public static List<String> KickQue
+            {
+                get
+                {
+                    return HttpContext.Current.Application["KickQue"] as List<String>;
+                }
+                set
+                {
+                    HttpContext.Current.Application["KickQue"] = value;
+                }
+            } 
         }
 
-        public class UserSession : User
+        internal class UserSession : User
         {
-            public DateTime LoginTime { get; set; }
-            public DateTime LastMessageTime { get; set; }
+            internal DateTime LoginTime { get; set; }
+            internal DateTime LastMessageTime { get; set; }
         }
     }
 }

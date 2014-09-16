@@ -1,0 +1,39 @@
+﻿@model NJS_Chat.Models.BanViewModel
+
+@{
+    ViewBag.Title = "BanUser";
+}
+
+<h2>BanUser</h2>
+
+@using (Html.BeginForm("BanUser", "Admin", FormMethod.Post))
+{
+    <table>
+        <tr>
+            <td>
+                User
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.UserName)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Ban Reason:
+            </td>
+            <td>
+                @Html.TextBoxFor(model => model.BanReason, new { })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Ban Lift Date:
+            </td>
+            <td>
+                @Html.TextBoxFor(model => model.BanLiftDate, new { placeholder = "Leave empty for permanent ban." })
+            </td>
+        </tr>
+    </table>
+    
+    <button type="submit">Ban</button>
+}
