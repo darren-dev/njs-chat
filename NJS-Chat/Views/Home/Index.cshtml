@@ -40,9 +40,7 @@
                 {
                     @Html.TextBoxFor(model => model.Message, new { placeholder = "Type a message here", @class = "postInput", autofocus = "", autocomplete = "off", type = "text" })
 
-                    <span class="postButtonHolder">
-                        <button class="postButton">Send</button>
-                    </span>
+                        <button class=" postButtonHolder postButton">Send</button>
 
 
                     @Html.DropDownListFor(model => model.To, Model.ToSelectItems, new { style = "height: 33px;width: 113px;margin-left: 8px;border-color: #CCC;" })
